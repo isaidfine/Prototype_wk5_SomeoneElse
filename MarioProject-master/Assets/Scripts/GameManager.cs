@@ -18,11 +18,15 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI yearText;
     public TextMeshProUGUI statsText;
+    
+    public AudioClip levelSound;
+    private AudioSource audioSource;
 
     private void Awake()
     {
         player.transform.position = playerStartPosition;
         playerCharacter = player.GetComponent<PlayerCharacter>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -65,6 +69,7 @@ public class GameManager : MonoBehaviour
         if (level < 27)
         {
             mask.SetActive(true);
+            audioSource.PlayOneShot(levelSound);
             yield return new WaitForSeconds(0.5f);
             mask.SetActive(false); 
             ResetLevel();
@@ -75,6 +80,7 @@ public class GameManager : MonoBehaviour
             if (year < 35)
             {
                 mask1.SetActive(true);
+                audioSource.PlayOneShot(levelSound);
                 yield return new WaitForSeconds(0.5f);
                 mask1.SetActive(false); 
                 ResetLevel();
@@ -83,6 +89,7 @@ public class GameManager : MonoBehaviour
             if (year >= 35)
             {
                 mask2.SetActive(true);
+                audioSource.PlayOneShot(levelSound);
                 yield return new WaitForSeconds(0.5f);
                 mask2.SetActive(false); 
                 ResetLevel();

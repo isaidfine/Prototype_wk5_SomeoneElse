@@ -19,12 +19,16 @@ public class MarioBlock : MonoBehaviour
     private Coroutine idleCoroutine;
     public GameManager gameManager;
     public TextMeshProUGUI lvUpText;
+    
+    public AudioClip coinSound;
+    private AudioSource audioSource;
 
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalPosition = transform.position;
         idleCoroutine = StartCoroutine(IdleAnimation());
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -42,6 +46,7 @@ public class MarioBlock : MonoBehaviour
             gameManager.level++;
             StartCoroutine(BounceBlock());
         }
+        
     }
 
     private IEnumerator IdleAnimation()
@@ -89,6 +94,7 @@ public class MarioBlock : MonoBehaviour
             lvUpText.rectTransform.position += Vector3.down * 80f;
         }));
         lvUpText.DOFade(0, 1f);
+        audioSource.PlayOneShot(coinSound);
     }
     public void ResetBlock()
     {

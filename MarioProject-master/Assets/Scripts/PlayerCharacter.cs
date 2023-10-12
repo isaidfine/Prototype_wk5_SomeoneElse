@@ -9,7 +9,11 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField]
     Animator anim;
     
+    public AudioClip jumpSound;
+    private AudioSource audioSource;
+    
     public Transform checkPoint;
+    
 
     public float curSpeed = 3f;
     public float maxSpeed = 5f;
@@ -34,6 +38,7 @@ public class PlayerCharacter : MonoBehaviour
     void Start ()
     {
         Init();
+        audioSource = GetComponent<AudioSource>();
 
     }
 
@@ -86,6 +91,7 @@ public class PlayerCharacter : MonoBehaviour
             isJumping = true;
             jumpTimer = 0f;
             rig2d.velocity = new Vector2(rig2d.velocity.x, jumpSpeed);
+            audioSource.PlayOneShot(jumpSound);
         }
 
         void StopJump()
