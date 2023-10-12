@@ -1,4 +1,6 @@
 using System.Collections;
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 public class MarioBlock : MonoBehaviour
@@ -15,6 +17,8 @@ public class MarioBlock : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private int currentSpriteIndex = 0;
     private Coroutine idleCoroutine;
+    public GameManager gameManager;
+    public TextMeshProUGUI lvUpText;
 
     private void Start()
     {
@@ -35,6 +39,7 @@ public class MarioBlock : MonoBehaviour
             }
             spriteRenderer.sprite = hitSprite;
             SpawnCoin();
+            gameManager.level++;
             StartCoroutine(BounceBlock());
         }
     }
@@ -78,5 +83,22 @@ public class MarioBlock : MonoBehaviour
     private void SpawnCoin()
     {
         GameObject coin = Instantiate(coinPrefab, transform.position + Vector3.up, Quaternion.identity);
+        lvUpText.DOFade(1, 0);
+        lvUpText.rectTransform.DOMoveY(lvUpText.rectTransform.position.y + 80f, 1).OnComplete((() =>
+        {
+            lvUpText.rectTransform.position += Vector3.down * 80f;
+        }));
+        lvUpText.DOFade(0, 1f);
+    }
+    public void ResetBlock()
+    {
+        Debug.Log("Block Reset!");
+        canBeHit = true;
+        spriteRenderer.sprite = idleSprites[0];
+        currentSpriteIndex = 0;
+        if(idleCoroutine == null)
+        {
+            idleCoroutine = StartCoroutine(IdleAnimation());
+        }
     }
 }
